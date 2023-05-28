@@ -90,5 +90,53 @@ class Products extends Base
         return $filename;
     }
 
-}
 
+
+    public function update($data)
+    {
+
+    if (!empty($data["photo"])) {
+        $photo = $this->handleUploadedImage($data["photo"]);
+    } else {
+        $existingProduct = $this->getItem(($data["id"]));
+        $photo = $existingProduct["photo"];
+
+    }
+    $query = $this->db->prepare("
+            UPDATE
+                products
+            SET
+                name = ?,
+                description = ?,
+                price = ?,
+                stock = ?,
+                category_id = ?,
+                photo = ?
+            WHERE
+                product_id = ?
+        ");
+
+    $query->execute([
+        $data["name"],
+        $data["description"],
+        $data["price"],
+        $data["stock"],
+        $data["category_id"],
+        $photo,
+        $data["id"]
+    ]);
+
+    return $data;
+  }
+
+    public function delete($id)
+    {
+
+        $query = $this->db->prepare("
+            DELETE FROM products
+            WHERE product_id = ?
+        ");
+
+        return $query->execute([$id]);
+    }
+}

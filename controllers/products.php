@@ -14,4 +14,5 @@ if( empty($products) ) {
 }
 
 
+
 require("views/products.php");

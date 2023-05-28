@@ -32,18 +32,39 @@ $model = new $className();
 
 if( $_SERVER["REQUEST_METHOD"] === "GET") {
 
-
+    if(isset($resource_id)) {
+        $response = $model->getItem($resource_id);
+    }
+    else {
+        $response = $model->get();
+    }
 }
 else if($_SERVER["REQUEST_METHOD"] === "POST") {
 
+    $body = file_get_contents("php://input");
+    $data = json_decode($body, true);
+
+    http_response_code(202);
+    $response = $model->create( $data );
 
 }
 else if($_SERVER["REQUEST_METHOD"] === "PUT") {
 
+    $body = file_get_contents("php://input");
+    $data = json_decode($body, true);
+
+    $data["id"] = $resource_id;
+
+    http_response_code(202);
+    $response = $model->update( $data );
 }
 else if($_SERVER["REQUEST_METHOD"] === "DELETE") {
 
+    http_response_code(202);
 
+    $response = [
+        "Item deleted" => $model->delete( $resource_id )
+    ];
 }
 
 if(empty($response)) {
