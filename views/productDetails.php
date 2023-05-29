@@ -28,7 +28,7 @@
                         value="1"
                 >
             </label>
-            <input type="hidden" name="product_id" value="<?php echo $product["product_id"]; ?>">
+
             <button type="submit" name="send" class="product-details-add-to-cart-btn">Add to Cart</button>
         </div>
     </div>

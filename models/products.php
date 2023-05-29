@@ -5,28 +5,19 @@ class Products extends Base
 {
     public $requiresAuth = false;
 
-    public function get($category_id = null)
+    public function get()
     {
 
         $query = $this->db->prepare("
-            SELECT
-                products.product_id,
-                products.name,
-                products.photo AS image,
-                products.price,
-                categories.name AS category
+             SELECT
+                product_id,
+                name,
+                photo AS image,
+                price
             FROM
                 products
-            INNER JOIN
-                categories USING(category_id)
-            WHERE
-                ? IS NULL OR products.category_id = ?
-        ");
-
-        $query->execute([
-            $category_id,
-            $category_id
-        ]);
+    ");
+        $query->execute();
 
         return $query->fetchAll();
     }

@@ -38,6 +38,7 @@ if( $_SERVER["REQUEST_METHOD"] === "GET") {
     else {
         $response = $model->get();
     }
+
 }
 else if($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -73,13 +74,3 @@ if(empty($response)) {
 }
 
 echo json_encode($response);
-
-
-
-
-
-
-
-
-
-

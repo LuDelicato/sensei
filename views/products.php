@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-    <link rel="stylesheet" href="">
+    <meta name="viewport">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <title></title>
@@ -13,7 +12,7 @@
     <?php foreach ($products as $product): ?>
         <div class="product">
             <h3><?php echo $product['name']; ?></h3>
-            <a href="/product/<?php echo $product['product_id']; ?>">
+            <a href="/products/<?php echo $product['product_id']; ?>">
                 <img src="/images/<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>">
             </a>
             <p>€<?php echo $product['price']; ?></p>

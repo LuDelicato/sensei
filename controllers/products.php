@@ -1,12 +1,10 @@
 <?php
 
-require ("templates/navigation.php");
-
-require("models/products.php");
+require_once("models/products.php");
 
 $model = new Products();
 
-$products = $model->get(  );
+$products = $model->get();
 
 if( empty($products) ) {
     http_response_code(404);
@@ -14,5 +12,6 @@ if( empty($products) ) {
 }
 
 
-
-require("views/products.php");
+if ($_SERVER['REQUEST_URI'] === '/products') {
+    require("views/products.php");
+}
