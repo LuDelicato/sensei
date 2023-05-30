@@ -41,6 +41,26 @@ class Products extends Base
 
     }
 
+    public function getByCategory($category_id)
+    {
+        $query = $this->db->prepare("
+        SELECT
+            product_id,
+            name,
+            photo AS image,
+            price
+        FROM
+            products
+        WHERE
+            category_id = ?
+    ");
+
+        $query->execute([$category_id]);
+
+        return $query->fetchAll();
+    }
+
+
     public function create($data)
     {
 

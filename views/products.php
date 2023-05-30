@@ -1,3 +1,6 @@
+<?php
+require_once ("templates/navigation.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,9 +22,7 @@
             <form action="/cart/<?php echo $product['product_id']; ?>" method="post">
                 <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
                 <div class="quantity-container">
-                    <button type="button" class="quantity-btn minus">-</button>
                     <input type="number" name="quantity" class="quantity-input" value="1">
-                    <button type="button" class="quantity-btn plus">+</button>
                 </div>
                 <button type="submit" class="add-to-cart">Add to Cart</button>
             </form>

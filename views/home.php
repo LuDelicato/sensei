@@ -1,3 +1,6 @@
+<?php
+require_once ("templates/navigation.php");
+?>
 <!doctype html>
 <html lang="en">
 <head>

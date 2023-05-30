@@ -1,5 +1,5 @@
 <?php
-require_once ("templates/navigation.php");
+
 session_start();
 
 $url_parts = explode("/", $_SERVER["REQUEST_URI"]);
@@ -12,7 +12,9 @@ $controller = "home";
 $allowed_controllers = [
     "home",
     "products",
-    "api"
+    "api",
+    "categories",
+    "subcategories"
 ];
 
 if (!empty($url_parts[1])) {
@@ -32,7 +34,5 @@ if ($controller === "products" && !empty($id)) {
 
     require("controllers/productDetails.php");
 }
-
-
 
 require("controllers/" . $controller . ".php");
