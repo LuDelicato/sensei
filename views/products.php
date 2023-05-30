@@ -30,5 +30,6 @@ require_once ("templates/navigation.php");
     <?php endforeach; ?>
 </div>
 <script src="/assets/js/add-to-cart.js"></script>
+<script src="/assets/js/preventReload.js"></script>
 </body>
 </html>

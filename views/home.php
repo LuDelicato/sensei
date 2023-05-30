@@ -17,5 +17,6 @@ require_once ("templates/navigation.php");
     <img src="images/banner.webp" alt="">
 
 </div>
+<script src="/assets/js/preventReload.js"></script>
 </body>
 </html>

@@ -1,0 +1,14 @@
+# production
+/build
+
+# misc
+api/.env
+api/.htaccess
+.ico
+.css
+.idea/
+# resources
+
+/vendor/
+/assets/
+/images
