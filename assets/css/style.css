@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    background-color: #f2f2f2;
+    padding: 10px 0;
+    text-align: center;
+    z-index: 100;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.navbar ul li {
+    margin: 0 10px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.navbar ul li a:hover {
+    color: #ff7200;
+}
+
+#welcome {
+    text-align: center;
+    padding: 0;
+}
+
+.message {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+}
+.middle-section {
+    text-align: center;
+    padding: 80px 0;
+    opacity: 65%;
+}
+
+
+/* products */
+
+.product-collection {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.product {
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product img {
+    width: 100%;
+    max-height: 250px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.product h3 {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.product .price {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.product button.add-to-cart {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 8px 12px;
+    font-size: 12px;
+}
+
+/* qty btns */
+
+.quantity-input {
+    width: 50px;
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #555;
+}
+
+.add-to-cart {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #ff7200;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+/* product id */
+
+
+.product-details-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.product-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.product-details-image {
+    width: 50%;
+    padding: 10px;
+}
+
+.product-details-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.product-details-info {
+    width: 50%;
+    padding: 10px;
+}
+
+.product-details-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.product-details-description {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.product-details-price {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.product-details-add-to-cart-btn {
+    display: block;
+    width: 150px;
+    padding: 10px;
+    background-color: #ff5722;
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.product-details-add-to-cart-btn:hover {
+    background-color: #f44336;
+}
+
+.product-details-quantity {
+    display: block;
+    width: 100px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #555;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* register and login */
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 350px);
+}
+
+.form-wrapper {
+    width: 400px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-info {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
