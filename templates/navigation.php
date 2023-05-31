@@ -1,11 +1,3 @@
-<div id="welcome">
-    <div class="page-width">
-        <p class="message h5">
-            <span>Welcome to Sensei's Store</span>
-        </p>
-    </div>
-</div>
-
 <header class="navbar">
     <h1 class="header">
         <a href="/">

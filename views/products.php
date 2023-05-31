@@ -8,7 +8,7 @@ require_once ("templates/navigation.php");
     <meta name="viewport">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
-    <title></title>
+    <title>Sensei - <?php echo $activeCategory ?? 'All Products'; ?></title>
 </head>
 <body>
 <div class="product-collection">
@@ -30,6 +30,5 @@ require_once ("templates/navigation.php");
     <?php endforeach; ?>
 </div>
 <script src="/assets/js/add-to-cart.js"></script>
-<script src="/assets/js/preventReload.js"></script>
 </body>
 </html>

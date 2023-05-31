@@ -36,6 +36,5 @@ require_once ("templates/navigation.php");
         </div>
     </div>
 </div>
-<script src="/assets/js/preventReload.js"></script>
 </body>
 </html>

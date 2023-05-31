@@ -14,7 +14,10 @@ $allowed_controllers = [
     "products",
     "api",
     "categories",
-    "subcategories"
+    "subcategories",
+    "users",
+    "register",
+    "login"
 ];
 
 if (!empty($url_parts[1])) {
