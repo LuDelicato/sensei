@@ -1,12 +1,12 @@
 <?php
 
-require_once("models/products.php");
-
 if ( !isset($id) || !is_numeric($id)) {
 
     http_response_code(400);
     die("Invalid Request");
 }
+
+require("models/products.php");
 
 $model = new Products();
 
@@ -17,8 +17,6 @@ if ( empty($product)) {
     http_response_code(404);
     die("Page not Found");
 }
-
-
 
 require ("views/productDetails.php");
 

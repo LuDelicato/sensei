@@ -42,7 +42,7 @@ if (isset($_POST["send"])) {
 
         if (!empty($user_id)) {
             $_SESSION["user_id"] = $user_id;
-            header("Location: /");
+            header("Location: /cart/");
         } else {
             $message = "E-mail already in use";
         }

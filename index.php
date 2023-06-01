@@ -12,12 +12,14 @@ $controller = "home";
 $allowed_controllers = [
     "home",
     "products",
+    "productDetails",
     "api",
     "categories",
-    "subcategories",
-    "users",
     "register",
-    "login"
+    "login",
+    "logout",
+    "cart",
+    "checkout"
 ];
 
 if (!empty($url_parts[1])) {

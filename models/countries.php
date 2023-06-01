@@ -3,6 +3,9 @@ require_once("base.php");
 
 class Countries extends Base
 {
+
+    public $requiresAuth = false;
+
     public function get() {
 
         $query = $this->db->prepare("

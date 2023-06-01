@@ -1,8 +1,5 @@
 <?php
 
-use ReallySimpleJWT\Token;
-require("vendor/autoload.php");
-
 if(isset($_POST["send"])) {
 
     foreach($_POST as $key => $value) {
@@ -24,14 +21,14 @@ if(isset($_POST["send"])) {
         ) {
             $_SESSION["user_id"] = $user["user_id"];
             $_SESSION["user_name"] = $user["name"];
-            header("Location: /");
+            header("Location: /cart/");
         }
         else {
             $message = "Invalid email or password";
         }
     }
     else {
-        $message = "Invalid inputs";
+        $message = "Invalid email or password";
     }
 }
 elseif($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -52,27 +49,12 @@ elseif($_SERVER["REQUEST_METHOD"] === "POST") {
         if(
             !empty($user) &&
             password_verify($data->password, $user["password"])
-        ) {
-
-            $payload = [
-                "iat" => time(),
-                "user_id" => $user["user_id"],
-                "name" => $user["name"],
-                "exp" => time() + (60 * 60 * 24),
-                "iss" => "localhost"
-            ];
-
-            $token = Token::customPayload($payload, ENV["JWT_SECRET_KEY"] );
-
-            header("Authorization: Bearer " . $token);
-            die("Authorization: Bearer " . $token);
-        }
-        else {
+        )
+        {
             http_response_code(422);
             exit;
         }
     }
-
 }
 
 require("views/login.php");

@@ -38,19 +38,18 @@ if( $_SERVER["REQUEST_METHOD"] === "GET") {
     else {
         $response = $model->get();
     }
-
 }
 else if($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $body = file_get_contents("php://input");
     $data = json_decode($body, true);
 
+    $data = $model->sanitizer($data);
+
     http_response_code(202);
     $response = $model->create( $data );
-
 }
 else if($_SERVER["REQUEST_METHOD"] === "PUT") {
-
     $body = file_get_contents("php://input");
     $data = json_decode($body, true);
 
@@ -64,7 +63,7 @@ else if($_SERVER["REQUEST_METHOD"] === "DELETE") {
     http_response_code(202);
 
     $response = [
-        "Item deleted" => $model->delete( $resource_id )
+        "success" => $model->delete( $resource_id )
     ];
 }
 

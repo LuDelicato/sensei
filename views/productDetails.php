@@ -20,6 +20,8 @@ require_once ("templates/navigation.php");
             <h1 class="product-details-title"><?php echo $product['name']; ?></h1>
             <p class="product-details-description"><?php echo $product['description']; ?></p>
             <p class="product-details-price">€<?php echo $product['price']; ?></p>
+            <form action="/cart/<?php echo $product['product_id']; ?>" method="post">
+                <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
             <label>
                 Quantity
                 <input class="product-details-quantity"
@@ -31,8 +33,9 @@ require_once ("templates/navigation.php");
                         value="1"
                 >
             </label>
-
-            <button type="submit" name="send" class="product-details-add-to-cart-btn">Add to Cart</button>
+                <input type="hidden" name="product_id" value="<?php echo $product["product_id"]; ?>">
+                <button type="submit" name="send" class="add-to-cart">Add to Cart</button>
+            </form>
         </div>
     </div>
 </div>

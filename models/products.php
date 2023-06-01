@@ -3,7 +3,6 @@ require_once("base.php");
 
 class Products extends Base
 {
-    public $requiresAuth = false;
 
     public function get()
     {
@@ -149,5 +148,38 @@ class Products extends Base
         ");
 
         return $query->execute([$id]);
+    }
+
+    public function getProductWithinStock($data)
+    {
+
+        $query = $this->db->prepare("
+            SELECT product_id, name, price, stock
+            FROM products
+            WHERE product_id = ?
+              AND stock >= ?
+        ");
+
+        $query->execute([
+            $data["product_id"],
+            $data["quantity"]
+        ]);
+
+        return $query->fetch();
+    }
+
+    public function updateProductStock($product)
+    {
+
+        $query = $this->db->prepare("
+            UPDATE products
+            SET stock = stock - ?
+            WHERE product_id = ?
+        ");
+
+        return $query->execute([
+            $product["quantity"],
+            $product["product_id"]
+        ]);
     }
 }

@@ -2,8 +2,7 @@
 
 class Base
 {
-    public $db;
-
+    public PDO $db;
 
     public function __construct()
     {
@@ -15,5 +14,5 @@ class Base
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
             ]
         );
-        }
     }
+}

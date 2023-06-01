@@ -3,7 +3,6 @@ require_once("base.php");
 
 class Users extends Base
 {
-
     public function getUserFromEmail($email)
     {
 
@@ -22,12 +21,13 @@ class Users extends Base
 
     public function create($data)
     {
+        $api_key = $this->generateApiKey();
 
         $query = $this->db->prepare("
-            INSERT INTO users
-            (name, email, password, address, city, postal_code, country)
-            VALUES(?, ?, ?, ?, ?, ?, ?)
-        ");
+        INSERT INTO users
+        (name, email, password, address, city, postal_code, country)
+        VALUES(?, ?, ?, ?, ?, ?, ?, ?)
+    ");
 
         $result = $query->execute([
             $data["name"],
@@ -41,11 +41,5 @@ class Users extends Base
 
         return $this->db->lastInsertId();
     }
-
-    public function get() {
-
-        $query = $this->db->prepare("");
-    }
-
 
 }

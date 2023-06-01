@@ -24,7 +24,8 @@ require_once ("templates/navigation.php");
                 <div class="quantity-container">
                     <input type="number" name="quantity" class="quantity-input" value="1">
                 </div>
-                <button type="submit" class="add-to-cart">Add to Cart</button>
+                <input type="hidden" name="product_id" value="<?php echo $product["product_id"]; ?>">
+                <button type="submit" name="send" class="add-to-cart">Add to Cart</button>
             </form>
         </div>
     <?php endforeach; ?>
