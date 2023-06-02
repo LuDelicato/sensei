@@ -15,6 +15,7 @@ $user = $model->getUserById($user_id);
 
 if (!$user) {
     die("User profile not found.");
+    header("Location: /login");
 }
 
 $userOrders = $orders->getUserOrders($user_id);
@@ -22,11 +23,9 @@ $userOrders = $orders->getUserOrders($user_id);
 $errors = [];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
     if (
         empty($_POST["name"]) &&
         empty($_POST["email"]) &&
-        empty($_POST["password"]) &&
         empty($_POST["address"]) &&
         empty($_POST["city"]) &&
         empty($_POST["postal_code"]) &&
@@ -34,20 +33,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     ) {
         $errors[] = "No fields to update.";
     } else {
+
+        http_response_code(400);
+
         if (!empty($_POST["name"]) && (mb_strlen($_POST["name"]) < 3 || mb_strlen($_POST["name"]) > 60)) {
             $errors["name"] = "Name must be at least 3 characters.";
         }
 
         if (!empty($_POST["email"]) && !filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
             $errors["email"] = "Invalid email format.";
-        }
-
-        if (!empty($_POST["password"])) {
-            if (mb_strlen($_POST["password"]) < 8 || mb_strlen($_POST["password"]) > 1000) {
-                $errors["password"] = "Password must be at least 8 characters.";
-            } elseif ($_POST["password"] !== $_POST["repeat_password"]) {
-                $errors["password"] = "Passwords do not match.";
-            }
         }
 
         if (!empty($_POST["address"]) && (mb_strlen($_POST["address"]) < 10 || mb_strlen($_POST["address"]) > 120)) {
@@ -63,11 +57,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         if (empty($errors)) {
+
+            http_response_code(200);
             $data = [
                 "user_id" => $user_id,
                 "name" => $_POST["name"],
                 "email" => $_POST["email"],
-                "password" => $_POST["password"],
                 "address" => $_POST["address"],
                 "city" => $_POST["city"],
                 "postal_code" => $_POST["postal_code"],
@@ -83,4 +78,43 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    if (isset($_POST["update_password"])) {
+
+        $newPassword = $_POST["new_password"];
+        $confirmPassword = $_POST["confirm_password"];
+
+        if (empty($newPassword) || empty($confirmPassword)) {
+
+            $errorMessageClass = "show";
+            $errors[] = "Password cannot be blank.";
+
+        } else if (strlen($newPassword) < 8) {
+
+            $errorMessageClass = "show";
+            $errors[] = "Password must be at least 8 characters long.";
+
+        } else if ($newPassword !== $confirmPassword) {
+
+            $passwordError = "Passwords do not match.";
+        } else {
+
+            $result = $model->updatePassword([
+                "user_id" => $user_id,
+                "password" => $newPassword
+            ]);
+
+            if ($result) {
+                http_response_code(200);
+                $successMessage = "Password successfully changed.";
+
+            } else {
+                http_response_code(400);
+                $errorMessageClass = "show";
+                $errors[] = "Failed to update the password.";
+            }
+        }
+    }
+}
 require("views/profile.php");

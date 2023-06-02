@@ -74,7 +74,6 @@ class Users extends Base
         UPDATE users
         SET name = ?,
             email = ?,
-            password = ?,
             address = ?,
             city = ?,
             postal_code = ?
@@ -84,7 +83,6 @@ class Users extends Base
         $query->execute([
             $data['name'],
             $data['email'],
-            $data['password'],
             $data['address'],
             $data['city'],
             $data['postal_code'],
@@ -92,5 +90,21 @@ class Users extends Base
         ]);
 
         return $query->rowCount() > 0;
+    }
+
+    public function updatePassword($data)
+    {
+        $query = $this->db->prepare("
+        UPDATE users
+        SET password = ?
+        WHERE user_id = ?
+    ");
+
+        $hashedPassword = password_hash($data["password"], PASSWORD_DEFAULT);
+
+        return $query->execute([
+            $hashedPassword,
+            $data["user_id"]
+        ]);
     }
 }
