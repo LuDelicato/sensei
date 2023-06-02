@@ -19,7 +19,8 @@ $allowed_controllers = [
     "login",
     "logout",
     "cart",
-    "checkout"
+    "checkout",
+    "profile"
 ];
 
 if (!empty($url_parts[1])) {

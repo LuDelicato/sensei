@@ -21,12 +21,10 @@ class Users extends Base
 
     public function create($data)
     {
-        $api_key = $this->generateApiKey();
-
         $query = $this->db->prepare("
         INSERT INTO users
         (name, email, password, address, city, postal_code, country)
-        VALUES(?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES(?, ?, ?, ?, ?, ?, ?)
     ");
 
         $result = $query->execute([
@@ -42,4 +40,57 @@ class Users extends Base
         return $this->db->lastInsertId();
     }
 
+    public function getUserById($user_id)
+    {
+        $query = $this->db->prepare("
+            SELECT user_id, name, email, address, city, postal_code, country
+            FROM users
+            WHERE user_id = ?
+        ");
+
+        $query->execute([
+            $user_id
+        ]);
+
+        return $query->fetch();
+    }
+
+    public function getUserProfile($user_id)
+    {
+        $query = $this->db->prepare("
+            SELECT name, email, password, address, city, postal_code, country
+            FROM users
+            WHERE user_id = ?
+        ");
+
+        $query->execute([$user_id]);
+
+        return $query->fetch();
+    }
+
+    public function updateUser($data)
+    {
+        $query = $this->db->prepare("
+        UPDATE users
+        SET name = ?,
+            email = ?,
+            password = ?,
+            address = ?,
+            city = ?,
+            postal_code = ?
+        WHERE user_id = ?
+    ");
+
+        $query->execute([
+            $data['name'],
+            $data['email'],
+            $data['password'],
+            $data['address'],
+            $data['city'],
+            $data['postal_code'],
+            $data['user_id']
+        ]);
+
+        return $query->rowCount() > 0;
+    }
 }

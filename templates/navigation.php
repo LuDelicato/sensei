@@ -13,7 +13,7 @@
             <li><a href="/categories/3">Figures</a></li>
             <li><a href="/categories/4">Keychain</a></li>
             <li><a href="/contact">Contact</a></li>
-            <li><a href="/account"><i class="fas fa-user user-icon"></i></a></li>
+            <li><a href="/profile"><i class="fas fa-user user-icon"></i></a></li>
             <li><a href="/cart"><i class="fas fa-shopping-cart cart-icon"></i></a></li>
             <li class="navbar-button"><a href="/login" class="button">Login</a>
             <a href="/register" class="button">Register</a></li>

@@ -105,9 +105,7 @@ class Orders extends Base
 
         $query->execute([ $user_id ]);
 
-        $order_id = $this->db->lastInsertId();
-
-        return $order_id;
+        return $this->db->lastInsertId();
     }
 
     public function createDetail($order_id, $product) {
@@ -163,5 +161,36 @@ class Orders extends Base
         ]);
 
         return true;
+    }
+
+    public function getUserOrders($user_id)
+    {
+        $query = $this->db->prepare("
+        SELECT
+            u.user_id,
+            o.order_id,
+            o.order_date,
+            p.name AS product_name,
+            o.payment_date,
+            od.quantity,
+            od.price_each,
+            (od.quantity * od.price_each) AS subtotal
+        FROM
+            users u
+        INNER JOIN
+            orders o ON u.user_id = o.user_id
+        INNER JOIN
+            orderdetails od ON o.order_id = od.order_id
+        INNER JOIN
+            products p ON od.product_id = p.product_id
+        WHERE
+            u.user_id = ?
+        ORDER BY
+            o.order_date DESC
+    ");
+
+        $query->execute([$user_id]);
+
+        return $query->fetchAll();
     }
 }

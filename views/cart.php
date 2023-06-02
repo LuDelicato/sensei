@@ -59,7 +59,7 @@ require_once("templates/navigation.php");
         </table>
 
         <div class="cart-button">
-            <a href="/cart/">Complete purchase</a>
+            <a href="/checkout/">Complete purchase</a>
         </div>
     <?php } else {
         echo "<p class='cart-empty-cart-message'>Your cart is empty</p>";
