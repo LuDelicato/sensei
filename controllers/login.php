@@ -31,30 +31,5 @@ if(isset($_POST["send"])) {
         $message = "Invalid email or password";
     }
 }
-elseif($_SERVER["REQUEST_METHOD"] === "POST") {
-
-    $rawData = file_get_contents("php://input");
-    if(!empty($rawData)) {
-        $data = json_decode($rawData);
-
-        if(empty($data) || !isset($data->email) ) {
-            http_response_code(400);
-            exit;
-        }
-
-        require("models/users.php");
-        $model = new Users();
-        $user = $model->getUserFromEmail( $data->email );
-
-        if(
-            !empty($user) &&
-            password_verify($data->password, $user["password"])
-        )
-        {
-            http_response_code(422);
-            exit;
-        }
-    }
-}
 
 require("views/login.php");

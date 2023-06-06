@@ -31,9 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (isset($_SESSION["cart"][$product_id])) {
             $_SESSION["cart"][$product_id]["quantity"] = $quantity;
         }
-    } elseif (isset($_POST["remove"])) {
+    } else if (isset($_POST["remove"])) {
         $product_id = $_POST["product_id"];
-        // delete item from cart
+        // delete from cart
         unset($_SESSION["cart"][$product_id]);
     }
 }

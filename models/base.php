@@ -1,5 +1,6 @@
 <?php
 
+if (!class_exists('Base')) {
 class Base
 {
     public PDO $db;
@@ -15,4 +16,4 @@ class Base
             ]
         );
     }
-}
+}}

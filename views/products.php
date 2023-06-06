@@ -16,7 +16,7 @@ require_once ("templates/navigation.php");
         <div class="product">
             <h3><?php echo $product['name']; ?></h3>
             <a href="/products/<?php echo $product['product_id']; ?>">
-                <img src="/images/<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>">
+                <img src="/images/<?php echo $product['photo']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
             </a>
             <p>€<?php echo $product['price']; ?></p>
             <form action="/cart/<?php echo $product['product_id']; ?>" method="post">
@@ -30,6 +30,5 @@ require_once ("templates/navigation.php");
         </div>
     <?php endforeach; ?>
 </div>
-<script src="/assets/js/add-to-cart.js"></script>
 </body>
 </html>

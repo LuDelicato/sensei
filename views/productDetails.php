@@ -14,7 +14,7 @@ require_once ("templates/navigation.php");
 <div class="product-details-container">
     <div class="product-details">
         <div class="product-details-image">
-            <img src="/images/<?php echo $product['image']; ?>" alt="Product Image">
+            <img src="/images/<?php echo $product['photo']; ?>" alt="Product Image">
         </div>
         <div class="product-details-info">
             <h1 class="product-details-title"><?php echo $product['name']; ?></h1>

@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 $url_parts = explode("/", $_SERVER["REQUEST_URI"]);
@@ -8,19 +7,18 @@ define("ENV", parse_ini_file(".env"));
 
 $controller = "home";
 
-
 $allowed_controllers = [
     "home",
     "products",
     "productDetails",
-    "api",
     "categories",
     "register",
     "login",
     "logout",
     "cart",
     "checkout",
-    "profile"
+    "profile",
+    "admin"
 ];
 
 if (!empty($url_parts[1])) {

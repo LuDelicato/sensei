@@ -1,20 +1,25 @@
 <?php
+
 require_once("base.php");
+
+if (!class_exists('Products')) {
 
 class Products extends Base
 {
 
     public function get()
     {
-
         $query = $this->db->prepare("
-             SELECT
-                product_id,
-                name,
-                photo AS image,
-                price
-            FROM
-                products
+         SELECT
+            product_id,
+            name,
+            photo,
+            price,
+            stock, 
+            description, 
+            category_id
+        FROM
+            products
     ");
         $query->execute();
 
@@ -23,53 +28,46 @@ class Products extends Base
 
     public function getItem($id)
     {
-
         $query = $this->db->prepare("
-            SELECT
-                product_id, name, description, price,
-                stock, photo AS image, photo, category_id
-            FROM products
-            WHERE product_id = ?
-        ");
+        SELECT
+            product_id, name, description, price,
+            stock, photo, category_id
+        FROM products
+        WHERE product_id = ?
+    ");
 
-        $query->execute([
-            $id
-        ]);
+        $query->execute([$id]);
 
         return $query->fetch();
-
     }
-
     public function getByCategory($category_id)
     {
         $query = $this->db->prepare("
-        SELECT
-            product_id,
-            name,
-            photo AS image,
-            price
-        FROM
-            products
-        WHERE
-            category_id = ?
-    ");
+            SELECT
+                product_id,
+                name,
+                photo,
+                price
+            FROM
+                products
+            WHERE
+                category_id = ?
+        ");
 
         $query->execute([$category_id]);
 
         return $query->fetchAll();
     }
 
-
     public function create($data)
     {
-
         $query = $this->db->prepare("
-            INSERT INTO products
-            (name, description, price, stock, photo, category_id)
-            VALUES(?, ?, ?, ?, ?, ?)
-        ");
+        INSERT INTO products
+        (name, description, price, stock, photo, category_id)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ");
 
-        $photo = $this->handleUploadedImage($data["photo"]);
+        $photo = $this->handleUploadedImage($_FILES["photo"]);
 
         $query->execute([
             $data["name"],
@@ -87,34 +85,29 @@ class Products extends Base
 
     public function handleUploadedImage($image)
     {
-        $extract = base64_decode($image);
-
-        if (empty($extract)) {
+        if (empty($image['tmp_name'])) {
             return "";
         }
 
-        $filename = bin2hex(random_bytes(16)) . ".jpg";
+        $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
+        $filename = bin2hex(random_bytes(16)) . '.' . $extension;
 
-        file_put_contents("images/" . $filename, $extract);
+        $destination = "images/" . $filename;
 
-        return $filename;
+        if (move_uploaded_file($image['tmp_name'], $destination)) {
+            return $filename;
+        } else {
+            return "";
+        }
     }
-
-
-
     public function update($data)
     {
+        // check if new img is uploaded
+        if (isset($_FILES['photo']) && !empty($_FILES['photo']['tmp_name'])) {
+            $photo = $this->handleUploadedImage($_FILES['photo']);
 
-    if (!empty($data["photo"])) {
-        $photo = $this->handleUploadedImage($data["photo"]);
-    } else {
-        $existingProduct = $this->getItem(($data["id"]));
-        $photo = $existingProduct["photo"];
-
-    }
-    $query = $this->db->prepare("
-            UPDATE
-                products
+            $query = $this->db->prepare("
+            UPDATE products
             SET
                 name = ?,
                 description = ?,
@@ -122,26 +115,42 @@ class Products extends Base
                 stock = ?,
                 category_id = ?,
                 photo = ?
-            WHERE
-                product_id = ?
+            WHERE product_id = ?
         ");
 
-    $query->execute([
-        $data["name"],
-        $data["description"],
-        $data["price"],
-        $data["stock"],
-        $data["category_id"],
-        $photo,
-        $data["id"]
-    ]);
-
-    return $data;
-  }
-
+            $query->execute([
+                $data['name'],
+                $data['description'],
+                $data['price'],
+                $data['stock'],
+                $data['category_id'],
+                $photo,
+                $data['product_id']
+            ]);
+        } else {
+// img = 0, remove it from query
+            $query = $this->db->prepare("
+            UPDATE products
+            SET
+                name = ?,
+                description = ?,
+                price = ?,
+                stock = ?,
+                category_id = ?
+            WHERE product_id = ?
+        ");
+            $query->execute([
+                $data['name'],
+                $data['description'],
+                $data['price'],
+                $data['stock'],
+                $data['category_id'],
+                $data['product_id']
+            ]);
+        }
+    }
     public function delete($id)
     {
-
         $query = $this->db->prepare("
             DELETE FROM products
             WHERE product_id = ?
@@ -149,10 +158,8 @@ class Products extends Base
 
         return $query->execute([$id]);
     }
-
     public function getProductWithinStock($data)
     {
-
         $query = $this->db->prepare("
             SELECT product_id, name, price, stock
             FROM products
@@ -167,10 +174,8 @@ class Products extends Base
 
         return $query->fetch();
     }
-
     public function updateProductStock($product)
     {
-
         $query = $this->db->prepare("
             UPDATE products
             SET stock = stock - ?
@@ -182,4 +187,5 @@ class Products extends Base
             $product["product_id"]
         ]);
     }
+}
 }
