@@ -1,6 +1,8 @@
 /* admin nav */
 
 nav {
+    position: sticky;
+    top: 0;
     background-color: #f0f0f0;
 }
 
@@ -131,4 +133,114 @@ input[type="file"] {
 
 .edit-form.show {
     display: block;
+}
+/* User Table */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+/* Table Header */
+.user-table th {
+    background-color: #f0f0f0;
+    padding: 10px;
+    text-align: left;
+}
+
+/* users */
+.user-table .user-row:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.user-table .user-row td {
+    padding: 10px;
+}
+
+/* Action Buttons */
+.edit-user,
+.delete-user,
+.restrict-user {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-right: 5px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.edit-user:hover,
+.delete-user:hover,
+.restrict-user:hover {
+    background-color: #0056b3;
+}
+
+.user-h1 {
+    margin: 20px 0;
+    text-align: center;
+
+}
+/* user */
+
+.user-edit-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.user-edit-form {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.user-form-group {
+    margin-bottom: 15px;
+}
+
+.user-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.user-form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.user-save-button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.user-save-button:hover {
+    background-color: #45a049;
+}
+
+td a.user-active {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+td a.user-inactive {
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
 }

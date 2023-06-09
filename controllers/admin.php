@@ -3,13 +3,27 @@ require_once("models/products.php");
 require_once("models/categories.php");
 require_once("models/admin.php");
 require_once("models/base.php");
+require_once "models/countries.php";
+require_once("models/users.php");
 
+if (isset($url_parts[2])) {
+    $option = $url_parts[2];
+}
+
+if (!empty($url_parts[3])) {
+    $resource_id = $url_parts[3];
+} else {
+    $resource_id = "";
+}
 
 $model = new Products();
 $products = $model->get();
 
 $categoryModel = new Categories();
 $categories = $categoryModel->get();
+
+$userModel = new Users();
+$user = $userModel->getUserById($resource_id);
 
 $allowed_options = ["products", "categories", "orders", "users", "admin", "edit"];
 
@@ -54,7 +68,7 @@ if (!isset($_SESSION["admin"])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // create new
+    // product create new
     if (isset($_POST['add_product'])) {
         $name = $_POST['name'];
         $description = $_POST['description'];
@@ -90,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message = "Product created successfully!";
         }
     }
-    // delete(id)
+    // product delete(id)
     if (isset($_POST['delete_product'])) {
         if (isset($_POST['selected_product'])) {
             $selectedProductId = $_POST['selected_product'];
@@ -142,23 +156,92 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message = "Product not found";
         }
     }
-}
+    // edit user(id)
+    if (isset($_POST['selected_user'])) {
+        $selectedUserId = $_POST['selected_user'];
+        $selectedUser = $userModel->getUserById($selectedUserId);
 
-if (isset($url_parts[2])) {
-    $option = $url_parts[2];
-}
+        if ($selectedUser !== null) {
+            $data = [
+                'user_id' => $selectedUser['user_id'],
+                'name' => $_POST['name'] ?? $selectedUser['name'],
+                'email' => $_POST['email'] ?? $selectedUser['email'],
+                'address' => $_POST['address'] ?? $selectedUser['address'],
+                'city' => $_POST['city'] ?? $selectedUser['city'],
+                'postal_code' => $_POST['postal_code'] ?? $selectedUser['postal_code'],
+                'country' => $_POST['country'] ?? $selectedUser['country'],
+            ];
 
-if (!empty($url_parts[3])) {
-    $resource_id = $url_parts[3];
-} else {
-    $resource_id = "";
-}
+            // validate
+            $errors = [];
 
+            $usersModel = new Users();
+            $countryCodes = $usersModel->getCountryCodes();
+
+            if (!in_array($data['country'], $countryCodes)) {
+                $errors[] = "Invalid country.";
+            }
+
+            if (empty($data['name'])) {
+                $errors[] = "Name field is required.";
+            } elseif (mb_strlen($data['name']) < 3 || mb_strlen($data['name']) > 60) {
+                $errors[] = "Name must be between 3 and 60 characters.";
+            }
+
+            if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors[] = "Invalid email address.";
+            }
+
+            if (empty($data['address'])) {
+                $errors[] = "Address field is required.";
+            } elseif (mb_strlen($data['address']) < 10 || mb_strlen($data['address']) > 120) {
+                $errors[] = "Address must be between 10 and 120 characters.";
+            }
+
+            if (empty($data['city'])) {
+                $errors[] = "City field is required.";
+            } elseif (mb_strlen($data['city']) < 3 || mb_strlen($data['city']) > 40) {
+                $errors[] = "City must be between 3 and 40 characters.";
+            }
+
+            if (empty($data['postal_code'])) {
+                $errors[] = "Postal code field is required.";
+            } elseif (mb_strlen($data['postal_code']) < 4 || mb_strlen($data['postal_code']) > 20) {
+                $errors[] = "Postal code must be between 4 and 20 characters.";
+            }
+
+            if (isset($_POST['status'])) {
+                $status = ($_POST['status'] === '1') ? 1 : 0;
+                $data['status'] = $status;
+                $userModel->updateUserStatus($data);
+                $data['isActive'] = $status;
+            }
+
+            // sanitize
+            $data['name'] = $model->sanitize($data['name']);
+            $data['email'] = $model->sanitize($data['email']);
+            $data['address'] = $model->sanitize($data['address']);
+            $data['city'] = $model->sanitize($data['city']);
+            $data['postal_code'] = $model->sanitize($data['postal_code']);
+            $data['country'] = $model->sanitize($data['country']);
+
+            if (empty($errors)) {
+                $userModel->updateUser($data);
+                $message = "User updated successfully!";
+            } else {
+                $message = implode(' ', $errors);
+            }
+        } else {
+            http_response_code(404);
+            $message = "User not found";
+        }
+    }
+}
 if (empty($option)) {
 
     require("views/admin/dashboard.php");
 
-} elseif ($option === "products") {
+} else if ($option === "products") {
     $file = "models/products.php";
     if (file_exists($file)) {
         require($file);
@@ -171,7 +254,7 @@ if (empty($option)) {
     }
     require("views/admin/products.php");
 
-} elseif ($option === "edit" && $resource_id !== "") {
+} else if ($option === "edit" && $resource_id !== "") {
     $file = "models/products.php";
     if (file_exists($file)) {
         require($file);
@@ -186,7 +269,36 @@ if (empty($option)) {
             http_response_code(404);
             die("Product not found");
         }
+
+    }
+} else if ($option === "users") {
+    $file = "models/users.php";
+    if (file_exists($file)) {
+        require ($file);
+        $className = "Users";
+        $model = new $className;
+        $data = $model->get();
+        $users = $data;
     } else {
         echo "Model file not found: " . $file;
     }
+        require ("views/admin/users.php");
+} else if ($option ==="user") {
+    $file = "models/users.php";
+    if (file_exists($file)) {
+        require ($file);
+        $className = "Users";
+        $model = new $className;
+        $data = $model->getUserById($resource_id);
+        $user = $data;
+    } else {
+        echo "Model file not found: " . $file;
+    }
+        $countriesModel = new Countries();
+        $countries = $countriesModel->get();
+        require ("views/admin/editUser.php");
+}
+else {
+    http_response_code(404);
+    die("Page not found");
 }
