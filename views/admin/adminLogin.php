@@ -17,11 +17,11 @@
         <form action="/admin" method="post">
             <div>
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" maxlength="32" required>
+                <input type="email" id="email" name="email" maxlength="32" required placeholder="your@email.com">
             </div>
             <div>
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" minlength="8" maxlength="1000" required>
+                <input type="password" id="password" name="password" minlength="8" maxlength="1000" required placeholder="password must be at least 8 characters long">
             </div>
             <div>
                 <input type="hidden" name="csrf_token" value="<?= $_SESSION["csrf_token"] ?? "" ?>">
