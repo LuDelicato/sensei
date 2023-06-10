@@ -5,6 +5,7 @@ require_once("models/admin.php");
 require_once("models/base.php");
 require_once "models/countries.php";
 require_once("models/users.php");
+require_once("models/orders.php");
 
 if (isset($url_parts[2])) {
     $option = $url_parts[2];
@@ -24,6 +25,16 @@ $categories = $categoryModel->get();
 
 $userModel = new Users();
 $user = $userModel->getUserById($resource_id);
+
+$orderModel = new Orders();
+$userOrders = $orderModel->getUserOrderById($resource_id);
+
+$orderStatuses = $orderModel->getOrderStatuses();
+$userOrders = $orderModel->getUserOrderById($resource_id);
+
+foreach ($userOrders as &$order) {
+    $order['order_details'] = $orderModel->getOrderDetails($order['order_id']);
+}
 
 $allowed_options = ["products", "categories", "orders", "users", "admin", "edit"];
 
@@ -236,6 +247,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message = "User not found";
         }
     }
+
+    if (isset($_POST['selected_user'])) {
+        $orderModel = new Orders();
+        $userOrders = $orderModel->getUserOrders($resource_id);
+
+        $data['userOrders'] = $userOrders;
+
+        require("views/admin/userOrders.php");
+    }
+
+    if (isset($_POST['update_status'])) {
+
+        $orderId = $_POST['order_id'];
+        $statusId = $_POST['status'];
+
+        $orders = new Orders();
+
+        $data = [
+            'order_id' => $orderId,
+            'status' => $statusId
+        ];
+
+        //update
+        $result = $orders->updateOrderStatus($data);
+
+        if ($result) {
+            echo "Order status updated. Please refresh the page to update the drop-down";
+        } else {
+            echo "Failed to update the order status.";
+        }
+    }
 }
 if (empty($option)) {
 
@@ -282,7 +324,18 @@ if (empty($option)) {
     } else {
         echo "Model file not found: " . $file;
     }
-        require ("views/admin/users.php");
+    require ("views/admin/users.php");
+} else if ($option === "user" && !empty($url_parts[4]) && $url_parts[4] === "orders") {
+    $resource_id = $url_parts[2];
+    $file = "models/orders.php";
+    if (file_exists($file)) {
+        require($file);
+        $className = "Orders";
+        $model = new $className;
+        $data = $model->getUserOrders($resource_id);
+
+        require("views/admin/userOrders.php");
+    }
 } else if ($option ==="user") {
     $file = "models/users.php";
     if (file_exists($file)) {
@@ -294,9 +347,9 @@ if (empty($option)) {
     } else {
         echo "Model file not found: " . $file;
     }
-        $countriesModel = new Countries();
-        $countries = $countriesModel->get();
-        require ("views/admin/editUser.php");
+    $countriesModel = new Countries();
+    $countries = $countriesModel->get();
+    require ("views/admin/editUser.php");
 }
 else {
     http_response_code(404);

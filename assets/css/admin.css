@@ -160,7 +160,8 @@ input[type="file"] {
 /* Action Buttons */
 .edit-user,
 .delete-user,
-.restrict-user {
+.restrict-user,
+.orders-user {
     display: inline-block;
     padding: 6px 12px;
     margin-right: 5px;
@@ -169,6 +170,8 @@ input[type="file"] {
     text-decoration: none;
     border-radius: 4px;
 }
+
+
 
 .edit-user:hover,
 .delete-user:hover,
@@ -244,3 +247,35 @@ td a.user-inactive {
     cursor: pointer;
     text-decoration: none;
 }
+/* user orders */
+
+.user-orders-container {
+    margin-bottom: 20px;
+}
+
+.user-orders-order {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.user-orders-order-id {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.user-orders-details {
+    margin-top: 10px;
+}
+
+.user-orders-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.user-orders-table th,
+.user-orders-table td {
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+

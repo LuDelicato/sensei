@@ -152,7 +152,7 @@ require_once("templates/navigation.php");
                             <?php if ($index === 0): ?>
                                 <td rowspan="<?php echo $rowCount; ?>">#<?php echo $orderId; ?></td>
                                 <td rowspan="<?php echo $rowCount; ?>"><?php echo date('Y-m-d', strtotime($order['order_date'])); ?></td>
-                                <td rowspan="<?php echo $rowCount; ?>"><?php echo date('Y-m-d', strtotime($order['payment_date'])); ?></td>
+                                <td rowspan="<?php echo $rowCount; ?>"><?php echo isset($order['payment_date']) ? date('Y-m-d', strtotime($order['payment_date'])) : 'N/A'; ?></td>
                             <?php endif; ?>
                             <td><?php echo $productName; ?></td>
                             <td><?php echo $quantity; ?></td>

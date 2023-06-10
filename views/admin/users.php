@@ -39,8 +39,7 @@
             <td><?= $user['isActive'] ? 'Yes' : 'No'; ?></td>
             <td>
                 <a class="edit-user" href="/admin/user/<?= $user['user_id']; ?>">Edit</a>
-                <a class="delete-user" href="/admin/delete/<?= $user['user_id']; ?>">Delete</a>
-                <a class="orders-user" href="/admin/<?= $user['user_id']; ?>/orders">Orders</a>
+                <a class="orders-user" href="/admin/user/<?= $user['user_id']; ?>/orders">Orders</a>
             </td>
         </tr>
     <?php endforeach; ?>
