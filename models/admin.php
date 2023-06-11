@@ -43,4 +43,5 @@ class Admin extends Base
             'password' => $password
         ];
     }
+
 }

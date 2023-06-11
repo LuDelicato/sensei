@@ -168,16 +168,18 @@
                 SELECT product_id, name, price, stock
                 FROM products
                 WHERE product_id = ?
-                  AND stock >= ?
             ");
 
-            $query->execute([
-                $data["product_id"],
-                $data["quantity"]
-            ]);
+            $query->execute([$data["product_id"]]);
+            $product = $query->fetch();
 
-            return $query->fetch();
+            if ($product && $product["stock"] >= $data["quantity"]) {
+                return $product;
+            }
+
+            return null;
         }
+
         public function updateProductStock($product)
         {
             $query = $this->db->prepare("
@@ -227,5 +229,31 @@
 
             return $errors;
         }
+
+        public function getProductCount()
+        {
+            $query = $this->db->prepare("
+                SELECT COUNT(*) as count FROM products
+                ");
+            $query->execute();
+            $result = $query->fetch();
+
+            return $result['count'];
+        }
+
+        public function getProductBelowStock()
+        {
+            $query = $this->db->prepare("
+                SELECT p.product_id, p.name, p.price, p.stock, c.name AS category_name
+                FROM products p
+                INNER JOIN categories c ON p.category_id = c.category_id
+                WHERE p.stock <= 10
+        ");
+
+            $query->execute();
+
+            return $query->fetchAll();
+        }
+
     }
 }

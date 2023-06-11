@@ -1,39 +1,46 @@
 <?php
-require("models/products.php");
+
+require_once("models/products.php");
 
 $model = new Products();
 
-if (isset($_POST["send"]) && intval($_POST["quantity"]) > 0) {
-
-    $product = $model->getProductWithinStock($_POST);
-
-    if (!empty($product)) {
-        $_SESSION["cart"][$product["product_id"]] = [
-            "product_id" => $product["product_id"],
-            "quantity" => intval($_POST["quantity"]),
-            "name" => $product["name"],
-            "price" => $product["price"],
-            "stock" => $product["stock"]
-        ];
-    }
-
-    header("Location: /cart/");
-    exit();
-}
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST["send"]) && intval($_POST["quantity"]) > 0) {
+        $product = $model->getProductWithinStock($_POST);
 
-    //update qty items
-    if (isset($_POST["update"])) {
+        if (!empty($product) && $product["stock"] >= intval($_POST["quantity"])) {
+            $_SESSION["cart"][$product["product_id"]] = [
+                "product_id" => $product["product_id"],
+                "quantity" => intval($_POST["quantity"]),
+                "name" => $product["name"],
+                "price" => $product["price"],
+                "stock" => $product["stock"]
+            ];
+        } else {
+            echo "<p>There are not enough units available for this product.</p>";
+        }
+
+        header("Location: /cart/");
+        exit();
+    } elseif (isset($_POST["update"])) {
         $product_id = $_POST["product_id"];
         $quantity = $_POST["quantity"];
 
         if (isset($_SESSION["cart"][$product_id])) {
-            $_SESSION["cart"][$product_id]["quantity"] = $quantity;
+            $product = $model->getProductWithinStock([
+                "product_id" => $product_id,
+                "quantity" => $quantity
+            ]);
+
+            if (!empty($product) && $product["stock"] >= $quantity) {
+                $_SESSION["cart"][$product_id]["quantity"] = $quantity;
+            } else {
+                echo "<p>There are not enough units available for this product.</p>";
+            }
         }
-    } else if (isset($_POST["remove"])) {
+    } elseif (isset($_POST["remove"])) {
         $product_id = $_POST["product_id"];
-        // delete from cart
+        // Delete from cart
         unset($_SESSION["cart"][$product_id]);
     }
 }

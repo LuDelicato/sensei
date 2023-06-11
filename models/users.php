@@ -132,6 +132,14 @@ if (!class_exists('Users')) {
             return $query->rowCount() > 0;
         }
 
+        public function getUsersCount()
+        {
+            $query = $this->db->prepare("SELECT COUNT(*) as count FROM users");
+            $query->execute();
+            $result = $query->fetch();
+
+            return $result['count'];
+        }
 
     }
 }

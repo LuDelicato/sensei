@@ -265,5 +265,62 @@ if (!class_exists('Orders')) {
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        public function getOrderCount()
+        {
+            $query = $this->db->prepare("SELECT COUNT(*) as count FROM orders");
+            $query->execute();
+            $result = $query->fetch();
+
+            return $result['count'];
+        }
+
+        public function getRecentOrders($limit = 5)
+        {
+            $query = $this->db->prepare("
+            SELECT
+                o.order_id,
+                u.name AS user,
+                o.order_date,
+                os.name AS status
+            FROM
+                orders o
+            INNER JOIN
+                users u ON o.user_id = u.user_id
+            INNER JOIN
+                order_status os ON o.status_id = os.id
+            ORDER BY
+                o.order_date DESC
+            LIMIT
+                :limit
+        ");
+
+            $query->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $query->execute();
+
+            $recentOrders = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($recentOrders as &$order) {
+                $order['total_amount'] = $this->calculateOrderTotal($order['order_id']);
+            }
+
+            return $recentOrders;
+        }
+
+        public function calculateOrderTotal($orderId)
+        {
+            $query = $this->db->prepare("
+            SELECT SUM(od.quantity * od.price_each) AS total
+            FROM orderdetails od
+            WHERE od.order_id = :orderId
+        ");
+
+            $query->bindValue(':orderId', $orderId, PDO::PARAM_INT);
+            $query->execute();
+
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+
+            return $result['total'];
+        }
     }
 }

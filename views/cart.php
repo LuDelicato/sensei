@@ -34,7 +34,7 @@ require_once("templates/navigation.php");
                     <td>
                         <form action="" method="post">
                             <input type="hidden" name="product_id" value="<?php echo $key; ?>">
-                            <input type="number" name="quantity" value="<?php echo $item["quantity"]; ?>" min="1">
+                            <input type="number" name="quantity" value="<?php echo $item["quantity"]; ?>" min="1" max="<?php echo $item["stock"]; ?>">
                             <button type="submit" name="update">Update</button>
                         </form>
                     </td>

@@ -32,6 +32,15 @@ $userOrders = $orderModel->getUserOrderById($resource_id);
 $orderStatuses = $orderModel->getOrderStatuses();
 $userOrders = $orderModel->getUserOrderById($resource_id);
 
+/* stats */
+$productCount = $model->getProductCount();
+$orderCount = $orderModel->getOrderCount();
+$userCount = $userModel->getUsersCount();
+$productInventory = $model->getProductBelowStock();
+
+$limit = 5;
+$recentOrders = $orderModel->getRecentOrders($limit);
+
 foreach ($userOrders as &$order) {
     $order['order_details'] = $orderModel->getOrderDetails($order['order_id']);
 }
