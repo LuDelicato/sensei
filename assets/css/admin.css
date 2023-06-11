@@ -279,3 +279,89 @@ td a.user-inactive {
     padding: 5px;
 }
 
+/* Dashboard Styles *//* General Styles */
+
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Styles */
+.dashboard-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Quick Stats Styles */
+
+.dashboard-quick-stats {
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 24px;
+}
+
+.dashboard-stat-list {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+}
+
+.dashboard-stat-item {
+    margin-right: 20px;
+}
+
+/* Recent Orders Styles */
+.dashboard-recent-orders {
+    margin-bottom: 40px;
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.dashboard-table-header {
+    background-color: #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.dashboard-table-data {
+    padding: 10px;
+}
+
+.dashboard-table-row:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.dashboard-table-row:hover {
+    background-color: #e3e3e3;
+}
+
+/* Product Inventory Styles */
+.dashboard-product-inventory {
+    margin-bottom: 40px;
+}
+
+.dashboard-link {
+    margin-right: 10px;
+}
+
+/* Categories Styles */
+.dashboard-categories {
+    margin-bottom: 40px;
+}
+
+.dashboard-category-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.dashboard-category-item {
+    margin-bottom: 10px;
+}
